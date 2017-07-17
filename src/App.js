@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import * as firebase from 'firebase'
+import {
+  Button,
+  FormGroup,
+  FormControl,
+  ControlLabel,
+  HelpBlock,
+  Col,
+  ListGroup,
+  ListGroupItem
+} from 'react-bootstrap';
 
 // Initialize Firebase
 var config = {
@@ -19,7 +29,8 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-      items: undefined
+      items: undefined,
+      itemName: ''
     }
   }
 
@@ -38,7 +49,11 @@ class App extends Component {
   ShoppingList = (items) => {
     return items
     ? Object.values(items).map((item, index) => {
-      return <div><p>{item.name}</p><p>{item.cost}</p><p>{item.ticked}</p></div>
+      return <ListGroupItem>
+          {item.name}
+          <Button bsSize="xsmall" bsStyle="danger"onClick={this.removeItem}>
+          X</Button>
+        </ListGroupItem>
     })
     : 'Nothing here but us chickens'
   }
@@ -47,9 +62,25 @@ class App extends Component {
     const rootRef = firebase.database().ref();
     const itemsRef = rootRef.child("shopList");
     itemsRef.push().set({
-      name: 'milk',
+      name: this.state.itemName,
       cost: 1,
       ticked: false,
+    })
+  }
+
+  removeItem = () => {
+    const rootRef = firebase.database().ref();
+    const itemsRef = rootRef.child("shopList");
+    itemsRef.push().set({
+      name: this.state.itemName,
+      cost: 1,
+      ticked: false,
+    })
+  }
+
+  handleChange = (event) => {
+    this.setState({
+      itemName: event.target.value
     })
   }
 
@@ -60,11 +91,27 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <h1>{this.ShoppingList(this.state.items)}</h1>
-        <button onClick={this.addItem}>Add Item</button>
+        <Col xs={6} md={3} />
+        <Col xs={8} md={6}>
+          <ListGroup>
+            {this.ShoppingList(this.state.items)}
+          </ListGroup>
+          <form>
+            <FormGroup
+              controlId="formBasicText"
+            >
+              <ControlLabel>Working example with validation</ControlLabel>
+              <FormControl
+                type="text"
+                value={this.state.itemName}
+                placeholder="Enter item name"
+                onChange={this.handleChange}
+              />
+            </FormGroup>
+            <Button onClick={this.addItem}>Add Item</Button>
+          </form>
+        </Col>
+        <Col xs={6} md={3} />
       </div>
     )
   }
