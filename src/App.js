@@ -7,7 +7,6 @@ import {
   FormGroup,
   FormControl,
   ControlLabel,
-  HelpBlock,
   Col,
   ListGroup,
   ListGroupItem
@@ -46,36 +45,43 @@ class App extends Component {
     })
   }
 
+  // TODO: Make this a draggable list component and pass in removeItem
   ShoppingList = (items) => {
     return items
     ? Object.values(items).map((item, index) => {
       return <ListGroupItem>
-          {item.name}
-          <Button bsSize="xsmall" bsStyle="danger"onClick={this.removeItem}>
-          X</Button>
+          <span className={'float-right'}>
+            {item.name}
+          </span>
+          <span className={'float-left'}>
+            <Button bsSize="xsmall"
+              bsStyle="danger"onClick={() => this.removeItem(item)}>
+            X</Button>
+          </span>
         </ListGroupItem>
     })
     : 'Nothing here but us chickens'
   }
 
-  addItem = () => {
-    const rootRef = firebase.database().ref();
-    const itemsRef = rootRef.child("shopList");
-    itemsRef.push().set({
+  addItem = (e) => {
+    e.preventDefault()
+    // Get a key for a new Post.
+    var newItemKey = firebase.database().ref().child('shopList').push().key
+    // An item entry.
+    const itemData = {
+      key: newItemKey,
       name: this.state.itemName,
       cost: 1,
       ticked: false,
-    })
+    }
+    var updates = {}
+    updates['/shopList/' + newItemKey] = itemData
+    return firebase.database().ref().update(updates)
   }
 
-  removeItem = () => {
-    const rootRef = firebase.database().ref();
-    const itemsRef = rootRef.child("shopList");
-    itemsRef.push().set({
-      name: this.state.itemName,
-      cost: 1,
-      ticked: false,
-    })
+  removeItem = (item) => {
+    const shopListRef = firebase.database().ref().child('shopList')
+    shopListRef.child(item.key).remove()
   }
 
   handleChange = (event) => {
@@ -96,11 +102,11 @@ class App extends Component {
           <ListGroup>
             {this.ShoppingList(this.state.items)}
           </ListGroup>
-          <form>
+          <form onSubmit={this.addItem}>
             <FormGroup
               controlId="formBasicText"
             >
-              <ControlLabel>Working example with validation</ControlLabel>
+              <ControlLabel>お買い物書いてください</ControlLabel>
               <FormControl
                 type="text"
                 value={this.state.itemName}
