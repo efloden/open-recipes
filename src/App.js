@@ -9,7 +9,8 @@ import {
   ControlLabel,
   Col,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  Alert
 } from 'react-bootstrap';
 
 // Initialize Firebase
@@ -23,19 +24,37 @@ var config = {
 };
 firebase.initializeApp(config);
 
-class App extends Component {
+var provider = new firebase.auth.GoogleAuthProvider()
 
+class App extends Component {
   constructor() {
     super()
     this.state = {
       items: undefined,
-      itemName: ''
+      itemName: '',
+      user: ''
     }
   }
 
+  googleSignIn = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in.
+        console.log('logged in')
+        console.log(user.displayName)
+        this.setState({
+          user: user.displayName
+        })
+      } else {
+        // No user is signed in.
+        firebase.auth().signInWithRedirect(provider);
+      }
+    })
+  }
+
   componentDidMount() {
-    const rootRef = firebase.database().ref();
-    const itemsRef = rootRef.child("shopList");
+    const rootRef = firebase.database().ref()
+    const itemsRef = rootRef.child("shopList")
     itemsRef.on("value", snap => {
       this.setState({
         items: snap.val()
@@ -43,13 +62,15 @@ class App extends Component {
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
+    this.googleSignIn()
   }
 
   // TODO: Make this a draggable list component and pass in removeItem
   ShoppingList = (items) => {
     return items
     ? Object.values(items).map((item, index) => {
-      return <ListGroupItem>
+      return (
+        <ListGroupItem key={index}>
           <span className={'float-right'}>
             {item.name}
           </span>
@@ -59,6 +80,7 @@ class App extends Component {
             X</Button>
           </span>
         </ListGroupItem>
+      )
     })
     : 'Nothing here but us chickens'
   }
@@ -90,22 +112,31 @@ class App extends Component {
     })
   }
 
+  signOut = () => {
+    firebase.auth().signOut().then(function() {
+      // Sign-out successful.
+    }, function(error) {
+      // An error happened.
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+          <h2>Welcome, {this.state.user}! </h2>
         </div>
+        <Button bsSize="xsmall" bsStyle="danger" onClick={this.signOut}>
+          Log Out
+        </Button>
         <Col xs={0} md={3} />
         <Col xs={12} md={6}>
           <ListGroup>
             {this.ShoppingList(this.state.items)}
           </ListGroup>
           <form onSubmit={this.addItem}>
-            <FormGroup
-              controlId="formBasicText"
-            >
+            <FormGroup controlId="formBasicText">
               <ControlLabel>お買い物書いてください</ControlLabel>
               <FormControl
                 type="text"
