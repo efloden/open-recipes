@@ -1,15 +1,66 @@
-import React, { Component } from 'react';
-import '../App.css';
+import React, { Component } from 'react'
+import '../App.css'
 import * as firebase from 'firebase'
 import {
   Button,
+  Form,
   FormGroup,
   FormControl,
   ControlLabel,
   Col,
   ListGroup,
   ListGroupItem
-} from 'react-bootstrap';
+} from 'react-bootstrap'
+import {
+  SortableContainer,
+  SortableElement,
+  SortableHandle,
+  arrayMove,
+} from 'react-sortable-hoc'
+
+const DragHandle = SortableHandle(() => <span className='drag-handle'>::</span>)
+
+class Item extends Component {
+  removeItem = () => {
+    const shopListRef = firebase.database().ref().child('shopList')
+    shopListRef.child(this.props.item.key).remove()
+  }
+  render () {
+    return (
+      <ListGroupItem>
+        <div className="RecipeList--left">
+          <DragHandle /> {this.props.item.name}
+        </div>
+        <span className='RecipeList--center'></span>
+        <div className="RecipeList--right">
+          <Button bsSize='xsmall' bsStyle='danger'
+            onClick={this.removeItem}>
+            x
+          </Button>
+        </div>
+      </ListGroupItem>
+    )
+  }
+}
+
+const SortableItem = SortableElement(Item)
+
+class Items extends Component {
+  render() {
+    return (
+      <div>
+        <ListGroup>
+          {this.props.items.map((value, index) => (
+            <SortableItem key={`item-${index}`} index={index}
+              value={value.name} item={value} />
+          ))}
+        </ListGroup>
+      </div>
+    )
+  }
+}
+
+const SortableList = SortableContainer(Items)
 
 class RecipeList extends Component {
   constructor() {
@@ -24,29 +75,22 @@ class RecipeList extends Component {
     const itemsRef = rootRef.child("shopList")
     itemsRef.on("value", snap => {
       this.setState({
-        items: snap.val()
+        items: Object.values(snap.val()).map((item) => {
+          return item
+        })
       })
     }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
+      console.log("The read failed: " + errorObject.code)
     })
   }
-  // TODO: Make this a draggable list component and pass in removeItem
-  ShoppingList = (items) => {
-    return items
-    ? Object.values(items).map((item, index) => {
-      return (
-        <ListGroupItem key={index}>
-          <span className={'float-right'}>
-            {item.name}
-          </span>
-          <span className={'float-left'}>
-            <Button bsSize="xsmall"
-              bsStyle="danger"onClick={() => this.removeItem(item)}>
-            X</Button>
-          </span>
-        </ListGroupItem>
-      )
+  onSortEnd = ({oldIndex, newIndex}) => {
+    this.setState({
+      items: arrayMove(this.state.items, oldIndex, newIndex),
     })
+  }
+  sortableList = (items) => {
+    return items
+    ? <SortableList items={items} onSortEnd={this.onSortEnd} useDragHandle />
     : 'Nothing here but us chickens'
   }
 
@@ -77,36 +121,28 @@ class RecipeList extends Component {
     })
   }
 
-  signOut = () => {
-    firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-    }, function(error) {
-      // An error happened.
-    })
-  }
-
   render() {
     return (
       <div>
         <Col xs={0} md={3} />
           <Col xs={12} md={6}>
-            <ListGroup>
-              {this.ShoppingList(this.state.items)}
-            </ListGroup>
-            <form onSubmit={this.addItem}>
-              <FormGroup controlId="formBasicText">
-                <ControlLabel>お買い物書いてください</ControlLabel>
-                <FormControl
-                  type="text"
-                  value={this.state.itemName}
-                  placeholder="Enter item name"
-                  onChange={this.handleChange}
-                />
-              </FormGroup>
-              <Button onClick={this.addItem}>Add Item</Button>
-            </form>
+            {this.sortableList(this.state.items)}
           </Col>
         <Col xs={0} md={3} />
+        <Form inline onSubmit={this.addItem}>
+          <FormGroup controlId="formBasicText">
+            <ControlLabel>Item</ControlLabel>
+            {' '}
+            <FormControl
+              type="text"
+              value={this.state.itemName}
+              placeholder="Enter item name"
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+          {' '}
+          <Button type='submit'>Add Item</Button>
+        </Form>
       </div>
     )
   }
