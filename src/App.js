@@ -1,17 +1,8 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import './App.css'
 import * as firebase from 'firebase'
-import {
-  Button,
-  FormGroup,
-  FormControl,
-  ControlLabel,
-  Col,
-  ListGroup,
-  ListGroupItem
-} from 'react-bootstrap';
-import RecipeList from './components/RecipeList';
+import Navigation from './components/Navigation'
+import RecipeList from './components/RecipeList'
 
 // Initialize Firebase
 var config = {
@@ -21,8 +12,8 @@ var config = {
   projectId: "nimblelist-5848a",
   storageBucket: "nimblelist-5848a.appspot.com",
   messagingSenderId: "655874835247"
-};
-firebase.initializeApp(config);
+}
+firebase.initializeApp(config)
 
 var provider = new firebase.auth.GoogleAuthProvider()
 
@@ -40,8 +31,6 @@ class App extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
-        console.log('logged in')
-        console.log(user.displayName)
         this.setState({
           user: user.displayName
         })
@@ -60,50 +49,9 @@ class App extends Component {
         items: snap.val()
       })
     }, function (errorObject) {
-      console.log("The read failed: " + errorObject.code);
+      console.log("The read failed: " + errorObject.code)
     })
     this.googleSignIn()
-  }
-
-  // TODO: Make this a draggable list component and pass in removeItem
-  ShoppingList = (items) => {
-    return items
-    ? Object.values(items).map((item, index) => {
-      return (
-        <ListGroupItem key={index}>
-          <span className={'float-right'}>
-            {item.name}
-          </span>
-          <span className={'float-left'}>
-            <Button bsSize="xsmall"
-              bsStyle="danger"onClick={() => this.removeItem(item)}>
-            X</Button>
-          </span>
-        </ListGroupItem>
-      )
-    })
-    : 'Nothing here but us chickens'
-  }
-
-  addItem = (e) => {
-    e.preventDefault()
-    // Get a key for a new Post.
-    var newItemKey = firebase.database().ref().child('shopList').push().key
-    // An item entry.
-    const itemData = {
-      key: newItemKey,
-      name: this.state.itemName,
-      cost: 1,
-      ticked: false,
-    }
-    var updates = {}
-    updates['/shopList/' + newItemKey] = itemData
-    return firebase.database().ref().update(updates)
-  }
-
-  removeItem = (item) => {
-    const shopListRef = firebase.database().ref().child('shopList')
-    shopListRef.child(item.key).remove()
   }
 
   handleChange = (event) => {
@@ -112,28 +60,14 @@ class App extends Component {
     })
   }
 
-  signOut = () => {
-    firebase.auth().signOut().then(function() {
-      // Sign-out successful.
-    }, function(error) {
-      // An error happened.
-    })
-  }
-
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome, {this.state.user}! </h2>
-        </div>
-        <Button bsSize="xsmall" bsStyle="danger" onClick={this.signOut}>
-          Log Out
-        </Button>
+        <Navigation />
         <RecipeList />
       </div>
     )
   }
 }
 
-export default App;
+export default App

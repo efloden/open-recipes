@@ -8,8 +8,7 @@ import {
   ControlLabel,
   Col,
   ListGroup,
-  ListGroupItem,
-  Alert
+  ListGroupItem
 } from 'react-bootstrap';
 
 class RecipeList extends Component {
@@ -113,4 +112,4 @@ class RecipeList extends Component {
   }
 }
 
-export default RecipeList;
+export default RecipeList
