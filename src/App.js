@@ -97,8 +97,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Welcome to React</h2>
         </div>
-        <Col xs={6} md={3} />
-        <Col xs={8} md={6}>
+        <Col xs={0} md={3} />
+        <Col xs={12} md={6}>
           <ListGroup>
             {this.ShoppingList(this.state.items)}
           </ListGroup>
@@ -117,7 +117,7 @@ class App extends Component {
             <Button onClick={this.addItem}>Add Item</Button>
           </form>
         </Col>
-        <Col xs={6} md={3} />
+        <Col xs={0} md={3} />
       </div>
     )
   }
