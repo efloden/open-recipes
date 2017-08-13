@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import '../App.css';
 import * as firebase from 'firebase'
 import {
   Button,
@@ -9,49 +8,18 @@ import {
   ControlLabel,
   Col,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  Alert
 } from 'react-bootstrap';
-import RecipeList from './components/RecipeList';
 
-// Initialize Firebase
-var config = {
-  apiKey: "AIzaSyC1El82G3drBmmdsfVGryUVueaEK9jASx8",
-  authDomain: "nimblelist-5848a.firebaseapp.com",
-  databaseURL: "https://nimblelist-5848a.firebaseio.com",
-  projectId: "nimblelist-5848a",
-  storageBucket: "nimblelist-5848a.appspot.com",
-  messagingSenderId: "655874835247"
-};
-firebase.initializeApp(config);
-
-var provider = new firebase.auth.GoogleAuthProvider()
-
-class App extends Component {
+class RecipeList extends Component {
   constructor() {
     super()
     this.state = {
       items: undefined,
       itemName: '',
-      user: ''
     }
   }
-
-  googleSignIn = () => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in.
-        console.log('logged in')
-        console.log(user.displayName)
-        this.setState({
-          user: user.displayName
-        })
-      } else {
-        // No user is signed in.
-        firebase.auth().signInWithRedirect(provider)
-      }
-    })
-  }
-
   componentDidMount() {
     const rootRef = firebase.database().ref()
     const itemsRef = rootRef.child("shopList")
@@ -62,9 +30,7 @@ class App extends Component {
     }, function (errorObject) {
       console.log("The read failed: " + errorObject.code);
     })
-    this.googleSignIn()
   }
-
   // TODO: Make this a draggable list component and pass in removeItem
   ShoppingList = (items) => {
     return items
@@ -122,18 +88,29 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome, {this.state.user}! </h2>
-        </div>
-        <Button bsSize="xsmall" bsStyle="danger" onClick={this.signOut}>
-          Log Out
-        </Button>
-        <RecipeList />
+      <div>
+        <Col xs={0} md={3} />
+          <Col xs={12} md={6}>
+            <ListGroup>
+              {this.ShoppingList(this.state.items)}
+            </ListGroup>
+            <form onSubmit={this.addItem}>
+              <FormGroup controlId="formBasicText">
+                <ControlLabel>お買い物書いてください</ControlLabel>
+                <FormControl
+                  type="text"
+                  value={this.state.itemName}
+                  placeholder="Enter item name"
+                  onChange={this.handleChange}
+                />
+              </FormGroup>
+              <Button onClick={this.addItem}>Add Item</Button>
+            </form>
+          </Col>
+        <Col xs={0} md={3} />
       </div>
     )
   }
 }
 
-export default App;
+export default RecipeList;
