@@ -97,7 +97,7 @@ class RecipeList extends Component {
   }
   sortableList = (items) => {
     return items
-    ? <SortableList items={items} onSortEnd={this.onSortEnd} useDragHandle />
+    ? <SortableList items={items} onSortEnd={this.onSortEnd} />
     : 'Nothing here but us chickens'
   }
 
