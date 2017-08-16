@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import './App.css'
 import * as firebase from 'firebase'
-import Navigation from './components/Navigation'
-import RecipeList from './components/RecipeList'
+import Navigation from './containers/Navigation'
+import RecipeList from './containers/RecipeList'
 
 // Initialize Firebase
 var config = {

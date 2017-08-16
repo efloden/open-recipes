@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import '../App.css'
 import * as firebase from 'firebase'
+import TriCheckbox from '../components/TriCheckbox'
 import {
   Button,
   Form,
@@ -15,25 +16,29 @@ import {
 import {
   SortableContainer,
   SortableElement,
-  SortableHandle,
   arrayMove
 } from 'react-sortable-hoc'
 
-const DragHandle = SortableHandle(() => <span className='drag-handle'>::</span>)
-
 class Item extends Component {
   static propTypes = {
-    item: PropTypes.object
+    item: PropTypes.object.isRequired
   }
   removeItem = () => {
     const shopListRef = firebase.database().ref().child('shopList')
     shopListRef.child(this.props.item.key).remove()
   }
+  onCheckItemChange = () => {
+    var updates = {}
+    updates['shopList/' + this.props.item.key + '/ticked'] = true
+    return firebase.database().ref().update(updates)
+  }
   render () {
     return (
       <ListGroupItem>
         <div className='RecipeList--left'>
-          <DragHandle /> {this.props.item.name}
+          <TriCheckbox onChange={this.onCheckItemChange} />
+          {' '}
+          {this.props.item.name}
         </div>
         <span className='RecipeList--center' />
         <div className='RecipeList--right'>
@@ -51,7 +56,7 @@ const SortableItem = SortableElement(Item)
 
 class Items extends Component {
   static propTypes = {
-    items: PropTypes.array
+    items: PropTypes.array.isRequired
   }
   render () {
     return (
