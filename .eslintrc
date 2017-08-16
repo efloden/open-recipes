@@ -1,3 +1,6 @@
+
+extends: zanata/react
+
 rules:
   # Specify the type of quotes that are acceptable to use in JSX attributes.
   # Standard enforces single-quotes, but we discussed this in our team and

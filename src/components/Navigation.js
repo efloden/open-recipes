@@ -11,13 +11,14 @@ import {
 class Navigation extends Component {
 
   logOut = () => {
-    firebase.auth().signOut().then(function() {
+    firebase.auth().signOut().then(function () {
       // Sign-out successful.
-    }, function(error) {
+    }, function (error) {
       // An error happened.
+      console.error(error)
     })
   }
-  render() {
+  render () {
     return (
       <Navbar inverse collapseOnSelect>
         <Navbar.Header>
@@ -37,7 +38,8 @@ class Navigation extends Component {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-  )}
+  )
+  }
 }
 
 export default Navigation
