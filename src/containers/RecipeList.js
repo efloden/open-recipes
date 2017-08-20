@@ -27,16 +27,18 @@ class Item extends Component {
     const shopListRef = firebase.database().ref().child('shopList')
     shopListRef.child(this.props.item.key).remove()
   }
-  onCheckItemChange = () => {
+  onCheckItemChange = (event) => {
+    const checked = event.target.checked
     var updates = {}
-    updates['shopList/' + this.props.item.key + '/ticked'] = true
+    updates['shopList/' + this.props.item.key + '/ticked'] = checked
     return firebase.database().ref().update(updates)
   }
   render () {
     return (
       <ListGroupItem>
         <div className='RecipeList--left'>
-          <TriCheckbox onChange={this.onCheckItemChange} />
+          <TriCheckbox onChange={this.onCheckItemChange}
+            checked={this.props.item.ticked} />
           {' '}
           {this.props.item.name}
         </div>
