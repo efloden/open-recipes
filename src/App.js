@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import './App.css'
 import * as firebase from 'firebase'
 import Navigation from './containers/Navigation'
-import RecipeList from './containers/RecipeList'
 
 // Initialize Firebase
 var config = {
@@ -63,7 +62,6 @@ class App extends Component {
     return (
       <div className='App'>
         <Navigation />
-        <RecipeList />
       </div>
     )
   }

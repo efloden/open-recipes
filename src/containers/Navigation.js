@@ -2,11 +2,18 @@ import React, { Component } from 'react'
 import '../App.css'
 import logo from '../logo.svg'
 import * as firebase from 'firebase'
+import RecipeList from './RecipeList'
+import RecipePosts from './RecipePosts'
 import {
   Navbar,
   Nav,
   NavItem
 } from 'react-bootstrap'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
 
 class Navigation extends Component {
 
@@ -20,24 +27,35 @@ class Navigation extends Component {
   }
   render () {
     return (
-      <Navbar inverse collapseOnSelect>
-        <Navbar.Header>
-          <Navbar.Brand>
-            <span style={{ width: 95 }}>Open Recipes</span>
-            <img src={logo} className="App-logo" alt="logo" />
-          </Navbar.Brand>
-          <Navbar.Toggle />
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Nav>
-            <NavItem eventKey={1} href="#">Recipes</NavItem>
-            <NavItem eventKey={2} href="#">Lists</NavItem>
-          </Nav>
-          <Nav pullRight>
-            <NavItem eventKey={1} onClick={this.logOut}>Log out</NavItem>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <Router>
+        <div>
+          <Navbar inverse collapseOnSelect>
+            <Navbar.Header>
+              <Navbar.Brand>
+                <span style={{ width: 95 }}>Open Recipes</span>
+                <img src={logo} className="App-logo" alt="logo" />
+              </Navbar.Brand>
+              <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
+              <Nav>
+                <NavItem eventKey={1} href="#">
+                  <Link to="/recipes">Recipes</Link>
+                </NavItem>
+                <NavItem eventKey={2} href="#">
+                  <Link to="/lists">Lists</Link>
+                </NavItem>
+              </Nav>
+              <Nav pullRight>
+                <NavItem eventKey={1} onClick={this.logOut}>Log out</NavItem>
+              </Nav>
+            </Navbar.Collapse>
+          </Navbar>
+          <Route exact path="/" component={RecipeList} />
+          <Route path="/recipes" component={RecipePosts} />
+          <Route path="/lists" component={RecipeList} />
+        </div>
+      </Router>
   )
   }
 }
