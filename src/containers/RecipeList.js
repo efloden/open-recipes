@@ -11,7 +11,8 @@ import {
   ControlLabel,
   Col,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  InputGroup
 } from 'react-bootstrap'
 import {
   SortableContainer,
@@ -138,25 +139,28 @@ class RecipeList extends Component {
   render () {
     return (
       <div>
-        <Col xs={0} md={3} />
+        <Col xs={3} md={3} />
         <Col xs={12} md={6}>
           {this.sortableList(this.state.items)}
           <Form inline onSubmit={this.addItem}>
             <FormGroup controlId='formBasicText'>
-              <ControlLabel>Item</ControlLabel>
+              <ControlLabel>Add an Item</ControlLabel>
               {' '}
-              <FormControl
-                type='text'
-                value={this.state.itemName}
-                placeholder='Enter item name'
-                onChange={this.handleChange}
-              />
+              <InputGroup>
+                <FormControl
+                  type='text'
+                  value={this.state.itemName}
+                  placeholder='Enter item name'
+                  onChange={this.handleChange}
+                />
+                <InputGroup.Button>
+                  <Button type='submit' bsStyle='success'>+</Button>
+                </InputGroup.Button>
+              </InputGroup>
             </FormGroup>
-            {' '}
-            <Button type='submit'>Add Item</Button>
           </Form>
         </Col>
-        <Col xs={0} md={3} />
+        <Col xs={3} md={3} />
       </div>
     )
   }
