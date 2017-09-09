@@ -16,7 +16,7 @@ import {
 } from 'react-bootstrap'
 import {
   SortableContainer,
-  SortableElement,
+  // SortableElement,
   arrayMove
 } from 'react-sortable-hoc'
 
@@ -38,10 +38,11 @@ class Item extends Component {
     return (
       <ListGroupItem>
         <div className='RecipeList--left'>
-          <TriCheckbox onChange={this.onCheckItemChange}
-            checked={this.props.item.ticked} />
-          {' '}
-          {this.props.item.name}
+          <label>
+            <TriCheckbox onChange={this.onCheckItemChange}
+              checked={this.props.item.ticked} />
+            {' ' + this.props.item.name}
+          </label>
         </div>
         <span className='RecipeList--center' />
         <div className='RecipeList--right'>
@@ -55,18 +56,29 @@ class Item extends Component {
   }
 }
 
-const SortableItem = SortableElement(Item)
+// Disabling draggable sorting
+// const SortableItem = SortableElement(Item)
 
 class Items extends Component {
   static propTypes = {
     items: PropTypes.array.isRequired
   }
   render () {
+    const checkedItems = this.props.items.filter(function (item) {
+      return item.ticked === true
+    })
+    const unCheckedItems = this.props.items.filter(function (item) {
+      return item.ticked === false
+    })
     return (
       <div>
         <ListGroup>
-          {this.props.items.map((value, index) => (
-            <SortableItem key={`item-${index}`} index={index}
+          {unCheckedItems.map((value, index) => (
+            <Item key={`item-${index}`} index={index}
+              value={value.name} item={value} />
+          ))}
+          {checkedItems.map((value, index) => (
+            <Item key={`item-${index}`} index={index}
               value={value.name} item={value} />
           ))}
         </ListGroup>
@@ -110,7 +122,7 @@ class RecipeList extends Component {
   }
 
   addItem = (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     // Get a key for a new Post.
     var newItemKey = firebase.database().ref().child('shopList').push().key
     // An item entry.
