@@ -40,10 +40,10 @@ class Navigation extends Component {
             <Navbar.Collapse>
               <Nav>
                 <NavItem eventKey={1} href="#">
-                  <Link to="/recipes">Recipes</Link>
+                  <Link to="/open-recipes/recipes">Recipes</Link>
                 </NavItem>
                 <NavItem eventKey={2} href="#">
-                  <Link to="/lists">Lists</Link>
+                  <Link to="/open-recipes/lists">Lists</Link>
                 </NavItem>
               </Nav>
               <Nav pullRight>
@@ -51,9 +51,9 @@ class Navigation extends Component {
               </Nav>
             </Navbar.Collapse>
           </Navbar>
-          <Route exact path="/" component={RecipeList} />
-          <Route path="/recipes" component={RecipePosts} />
-          <Route path="/lists" component={RecipeList} />
+          <Route exact path="/open-recipes/" component={RecipeList} />
+          <Route path="/open-recipes/recipes" component={RecipePosts} />
+          <Route path="/open-recipes/lists" component={RecipeList} />
         </div>
       </Router>
   )
