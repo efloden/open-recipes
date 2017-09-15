@@ -126,7 +126,7 @@ class RecipePosts extends Component {
                 <ListGroupItem key={idx + ingredient}>
                   <InputGroup>
                     <InputGroup.Button>
-                      <Button>
+                      <Button onClick={this.handleAddIngredient}>
                         +
                       </Button>
                     </InputGroup.Button>
@@ -146,9 +146,6 @@ class RecipePosts extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
-            <Button onClick={this.handleAddIngredient}
-              bsSize="small" bsStyle="success">Add Ingredient
-            </Button>
           </FormGroup>
           <FormGroup controlId='Steps'>
             <ControlLabel>Steps</ControlLabel>
@@ -156,6 +153,11 @@ class RecipePosts extends Component {
               {this.state.steps.map((step, idx) => (
                 <ListGroupItem key={idx}>
                   <InputGroup>
+                    <InputGroup.Button>
+                      <Button onClick={this.handleAddStep}>
+                        +
+                      </Button>
+                    </InputGroup.Button>
                     <FormControl
                       type="text"
                       placeholder={`Step #${idx + 1}`}
@@ -172,9 +174,6 @@ class RecipePosts extends Component {
                 </ListGroupItem>
               ))}
             </ListGroup>
-            <Button onClick={this.handleAddStep}
-              bsSize="small" bsStyle="success">Add Step
-            </Button>
           </FormGroup>
           <Button type="submit" bsStyle="primary">Submit</Button>
         </Form>
