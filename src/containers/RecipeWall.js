@@ -7,7 +7,7 @@ import { Button, Col, Grid, Row, Modal, Well } from 'react-bootstrap'
 
 class RecipeGrid extends Component {
   static propTypes = {
-    recipes: PropTypes.object.isRequired
+    recipes: PropTypes.array
   }
   render () {
     const recipeGrid = this.props.recipes &&
@@ -30,27 +30,27 @@ class RecipePost extends Component {
     recipe: PropTypes.object.isRequired
   }
   render () {
-    const Ingredient = (ingredient) => {
+    const Ingredient = (ingredient, index) => {
       return (
-        <div>
+        <div key={index}>
           {ingredient.name}
           {ingredient.amount}
           {ingredient.unit}
         </div>
       )
     }
-    const ingredients = this.props.recipe.ingredients.map((value) => {
-      return Ingredient(value)
+    const ingredients = this.props.recipe.ingredients.map((value, index) => {
+      return Ingredient(value, index)
     })
-    const Step = (step) => {
+    const Step = (step, index) => {
       return (
-        <div>
+        <div key={index}>
           {step.step}
         </div>
       )
     }
-    const steps = this.props.recipe.steps.map((value) => {
-      return Step(value)
+    const steps = this.props.recipe.steps.map((value, index) => {
+      return Step(value, index)
     })
     return (
       <Col sm={6} md={3}>
@@ -77,7 +77,7 @@ class RecipeWall extends Component {
   componentDidMount () {
     const rootRef = firebase.database().ref()
     const recipesRef = rootRef.child('recipes')
-    recipesRef.once('value', snap => {
+    recipesRef.on('value', snap => {
       this.setState({
         recipes: Object.values(snap.val()).map((recipe) => {
           return recipe
@@ -102,7 +102,7 @@ class RecipeWall extends Component {
         </Modal.Header>
         <Modal.Body>
           <div>
-            <RecipePosts />
+            <RecipePosts close={this.close} />
           </div>
         </Modal.Body>
       </Modal>

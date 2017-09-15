@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import '../App.css'
 import * as firebase from 'firebase'
 import { FormGroup, FormControl, InputGroup, ControlLabel, Button, Form,
@@ -6,6 +7,9 @@ import { FormGroup, FormControl, InputGroup, ControlLabel, Button, Form,
 } from 'react-bootstrap'
 
 class RecipePosts extends Component {
+  static propTypes = {
+    close: PropTypes.func.isRequired
+  }
   constructor () {
     super()
     this.state = {
@@ -175,7 +179,9 @@ class RecipePosts extends Component {
               ))}
             </ListGroup>
           </FormGroup>
-          <Button type="submit" bsStyle="primary">Submit</Button>
+          <Button type="submit" bsStyle="primary" onClick={this.props.close}>
+            Submit
+          </Button>
         </Form>
       </div>
     )
