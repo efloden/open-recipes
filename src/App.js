@@ -20,8 +20,6 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-      items: undefined,
-      itemName: '',
       user: ''
     }
   }
@@ -40,22 +38,7 @@ class App extends Component {
     })
   }
   componentDidMount () {
-    const rootRef = firebase.database().ref()
-    const itemsRef = rootRef.child('shopList')
-    itemsRef.on('value', snap => {
-      this.setState({
-        items: snap.val()
-      })
-    }, function (errorObject) {
-      console.error('The read failed: ' + errorObject.code)
-    })
     this.googleSignIn()
-  }
-
-  handleChange = (event) => {
-    this.setState({
-      itemName: event.target.value
-    })
   }
 
   render () {
