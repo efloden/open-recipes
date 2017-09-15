@@ -3,7 +3,7 @@ import '../App.css'
 import logo from '../logo.svg'
 import * as firebase from 'firebase'
 import RecipeList from './RecipeList'
-import RecipePosts from './RecipePosts'
+import RecipeWall from './RecipeWall'
 import {
   Navbar,
   Nav,
@@ -39,10 +39,10 @@ class Navigation extends Component {
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav>
-                <NavItem eventKey={1} href="#">
+                <NavItem eventKey={1}>
                   <Link to="/open-recipes/recipes">Recipes</Link>
                 </NavItem>
-                <NavItem eventKey={2} href="#">
+                <NavItem eventKey={2}>
                   <Link to="/open-recipes/lists">Lists</Link>
                 </NavItem>
               </Nav>
@@ -52,7 +52,7 @@ class Navigation extends Component {
             </Navbar.Collapse>
           </Navbar>
           <Route exact path="/open-recipes/" component={RecipeList} />
-          <Route path="/open-recipes/recipes" component={RecipePosts} />
+          <Route path="/open-recipes/recipes" component={RecipeWall} />
           <Route path="/open-recipes/lists" component={RecipeList} />
         </div>
       </Router>

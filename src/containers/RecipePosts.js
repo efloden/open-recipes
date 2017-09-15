@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../App.css'
 import * as firebase from 'firebase'
-import { FormGroup, FormControl, InputGroup, ControlLabel, Button, Form, Col,
+import { FormGroup, FormControl, InputGroup, ControlLabel, Button, Form,
   ListGroup, ListGroupItem
 } from 'react-bootstrap'
 
@@ -94,94 +94,90 @@ class RecipePosts extends Component {
   render () {
     return (
       <div>
-        <Col xs={0} md={3} />
-        <Col xs={12} md={6}>
-          <Form onSubmit={this.postRecipe}>
-            <FormGroup>
-              <ControlLabel>Recipe name</ControlLabel>
-              <FormControl
-                type="text"
-                value={this.state.recipe_name}
-                placeholder="Enter recipe name"
-                onChange={this.handleRecipeNameChange}
-              />
-            </FormGroup>
-            <FormGroup>
-              <ControlLabel>Number of servings</ControlLabel>
-              <ListGroup>
-                {this.state.yields.map((serving, idx) => (
-                  <ListGroupItem key={idx + serving}>
+        <Form onSubmit={this.postRecipe}>
+          <FormGroup>
+            <ControlLabel>Recipe name</ControlLabel>
+            <FormControl
+              type="text"
+              value={this.state.recipe_name}
+              placeholder="Enter recipe name"
+              onChange={this.handleRecipeNameChange}
+            />
+          </FormGroup>
+          <FormGroup>
+            <ControlLabel>Number of servings</ControlLabel>
+            <ListGroup>
+              {this.state.yields.map((serving, idx) => (
+                <ListGroupItem key={idx + serving}>
+                  <FormControl
+                    type="number"
+                    placeholder={idx + 1}
+                    value={serving.servings}
+                    onChange={this.handleServingsChange(idx)}
+                  />
+                </ListGroupItem>
+              ))}
+            </ListGroup>
+          </FormGroup>
+          <FormGroup controlId='Ingredients'>
+            <ControlLabel>Ingredients</ControlLabel>
+            <ListGroup>
+              {this.state.ingredients.map((ingredient, idx) => (
+                <ListGroupItem key={idx + ingredient}>
+                  <InputGroup>
+                    <InputGroup.Button>
+                      <Button>
+                        +
+                      </Button>
+                    </InputGroup.Button>
                     <FormControl
-                      type="number"
-                      placeholder={idx + 1}
-                      value={serving.servings}
-                      onChange={this.handleServingsChange(idx)}
+                      type="text"
+                      placeholder={`Ingredient #${idx + 1}`}
+                      value={ingredient.name}
+                      onChange={this.handleIngredientChange(idx)}
                     />
-                  </ListGroupItem>
-                ))}
-              </ListGroup>
-            </FormGroup>
-            <FormGroup controlId='Ingredients'>
-              <ControlLabel>Ingredients</ControlLabel>
-              <ListGroup>
-                {this.state.ingredients.map((ingredient, idx) => (
-                  <ListGroupItem key={idx + ingredient}>
-                    <InputGroup>
-                      <InputGroup.Button>
-                        <Button>
-                          +
-                        </Button>
-                      </InputGroup.Button>
-                      <FormControl
-                        type="text"
-                        placeholder={`Ingredient #${idx + 1}`}
-                        value={ingredient.name}
-                        onChange={this.handleIngredientChange(idx)}
-                      />
-                      <InputGroup.Button>
-                        <Button bsStyle='danger'
-                          onClick={this.handleRemoveIngredient(idx)}>
-                          X
-                        </Button>
-                      </InputGroup.Button>
-                    </InputGroup>
-                  </ListGroupItem>
-                ))}
-              </ListGroup>
-              <Button onClick={this.handleAddIngredient}
-                bsSize="small" bsStyle="success">Add Ingredient
-              </Button>
-            </FormGroup>
-            <FormGroup controlId='Steps'>
-              <ControlLabel>Steps</ControlLabel>
-              <ListGroup>
-                {this.state.steps.map((step, idx) => (
-                  <ListGroupItem key={idx}>
-                    <InputGroup>
-                      <FormControl
-                        type="text"
-                        placeholder={`Step #${idx + 1}`}
-                        value={step.step}
-                        onChange={this.handleStepChange(idx)}
-                      />
-                      <InputGroup.Button>
-                        <Button bsStyle='danger'
-                          onClick={this.handleRemoveStep(idx)}>
-                          X
-                        </Button>
-                      </InputGroup.Button>
-                    </InputGroup>
-                  </ListGroupItem>
-                ))}
-              </ListGroup>
-              <Button onClick={this.handleAddStep}
-                bsSize="small" bsStyle="success">Add Step
-              </Button>
-            </FormGroup>
-            <Button type="submit" bsStyle="primary">Submit</Button>
-          </Form>
-        </Col>
-        <Col xs={0} md={3} />
+                    <InputGroup.Button>
+                      <Button bsStyle='danger'
+                        onClick={this.handleRemoveIngredient(idx)}>
+                        X
+                      </Button>
+                    </InputGroup.Button>
+                  </InputGroup>
+                </ListGroupItem>
+              ))}
+            </ListGroup>
+            <Button onClick={this.handleAddIngredient}
+              bsSize="small" bsStyle="success">Add Ingredient
+            </Button>
+          </FormGroup>
+          <FormGroup controlId='Steps'>
+            <ControlLabel>Steps</ControlLabel>
+            <ListGroup>
+              {this.state.steps.map((step, idx) => (
+                <ListGroupItem key={idx}>
+                  <InputGroup>
+                    <FormControl
+                      type="text"
+                      placeholder={`Step #${idx + 1}`}
+                      value={step.step}
+                      onChange={this.handleStepChange(idx)}
+                    />
+                    <InputGroup.Button>
+                      <Button bsStyle='danger'
+                        onClick={this.handleRemoveStep(idx)}>
+                        X
+                      </Button>
+                    </InputGroup.Button>
+                  </InputGroup>
+                </ListGroupItem>
+              ))}
+            </ListGroup>
+            <Button onClick={this.handleAddStep}
+              bsSize="small" bsStyle="success">Add Step
+            </Button>
+          </FormGroup>
+          <Button type="submit" bsStyle="primary">Submit</Button>
+        </Form>
       </div>
     )
   }
