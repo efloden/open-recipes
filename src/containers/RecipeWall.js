@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import '../App.css'
 import RecipePosts from './RecipePosts'
+import RecipeEditor from './RecipeEditor'
 import * as firebase from 'firebase'
 import { Button, Col, Grid, Row, Modal, Well } from 'react-bootstrap'
 
@@ -12,7 +13,7 @@ class RecipeGrid extends Component {
   render () {
     const recipeGrid = this.props.recipes &&
     this.props.recipes.map((value, index) => (
-      <RecipePost key={`recipe-${index}`} index={index}
+      <RecipePost key={value.key} index={index}
         recipe={value} />
     ))
     return (
@@ -29,7 +30,31 @@ class RecipePost extends Component {
   static propTypes = {
     recipe: PropTypes.object.isRequired
   }
+  constructor () {
+    super()
+    this.state = {
+      showEditModal: false
+    }
+  }
+  close = () => {
+    this.setState({ showEditModal: false })
+  }
+  edit = () => {
+    this.setState({ showEditModal: true })
+  }
   render () {
+    const recipeEditModal = (
+      <Modal show={this.state.showEditModal} onHide={this.close}>
+        <Modal.Header closeButton>
+          <Modal.Title>Editing Recipe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div>
+            <RecipeEditor close={this.close} recipe={this.props.recipe} />
+          </div>
+        </Modal.Body>
+      </Modal>
+    )
     const Ingredient = (ingredient, index) => {
       return (
         <div key={index}>
@@ -56,11 +81,16 @@ class RecipePost extends Component {
       <Col sm={6} md={3}>
         <Well>
           <h4>{this.props.recipe.recipe_name}</h4>
+          <h4>{this.props.recipe.key}</h4>
           <h4>Ingredients</h4>
           {ingredients}
           <h4>Steps</h4>
           {steps}
+          <Button onClick={this.edit}
+            bsSize="small" bsStyle="success">Edit
+          </Button>
         </Well>
+        {recipeEditModal}
       </Col>
     )
   }
@@ -110,10 +140,10 @@ class RecipeWall extends Component {
     return (
       <div>
         <Col xs={0} md={2} />
-        <Button onClick={this.open}
-          bsSize="small" bsStyle="success">Create Recipe
-        </Button>
         <Col xs={12} md={6}>
+          <Button onClick={this.open}
+            bsSize="small" bsStyle="success">Create Recipe
+          </Button>
           <RecipeGrid recipes={this.state.recipes} />
           {recipePostModal}
         </Col>
