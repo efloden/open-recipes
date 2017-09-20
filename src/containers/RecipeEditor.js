@@ -13,6 +13,7 @@ class RecipeEditor extends Component {
   }
   constructor () {
     super()
+    const user = firebase.auth().currentUser
     this.state = {
       recipe_name: 'Baked apple',
       yields: [
@@ -34,7 +35,8 @@ class RecipeEditor extends Component {
         {
           step: 'Share it with a friend'
         }
-      ]
+      ],
+      user: user
     }
   }
   componentDidMount () {
@@ -43,12 +45,19 @@ class RecipeEditor extends Component {
   postRecipe = (e) => {
     e.preventDefault()
     // An item entry.
+    const user = firebase.auth().currentUser
     const recipeData = {
       key: this.state.key,
       recipe_name: this.state.recipe_name,
       yields: this.state.yields,
       ingredients: this.state.ingredients,
-      steps: this.state.steps
+      steps: this.state.steps,
+      user: {
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL
+      }
     }
     var updates = {}
     updates['/recipes/' + this.state.key] = recipeData

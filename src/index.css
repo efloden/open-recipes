@@ -12,3 +12,21 @@ body {
 .float-right {
   left: 0px;
 }
+
+.user-img {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.top-right {
+  position: absolute;
+  top: 1%;
+  right: 6%;
+}
+
+.margin-bottom {
+  margin-bottom: 10px;
+}

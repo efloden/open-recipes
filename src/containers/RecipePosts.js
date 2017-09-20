@@ -12,6 +12,7 @@ class RecipePosts extends Component {
   }
   constructor () {
     super()
+    const user = firebase.auth().currentUser
     this.state = {
       recipe_name: 'Baked apple',
       yields: [
@@ -33,7 +34,8 @@ class RecipePosts extends Component {
         {
           step: 'Share it with a friend'
         }
-      ]
+      ],
+      user: user
     }
   }
   postRecipe = (e) => {
@@ -45,7 +47,13 @@ class RecipePosts extends Component {
       recipe_name: this.state.recipe_name,
       yields: this.state.yields,
       ingredients: this.state.ingredients,
-      steps: this.state.steps
+      steps: this.state.steps,
+      user: {
+        uid: this.state.user.uid,
+        name: this.state.user.displayName,
+        email: this.state.user.email,
+        photoUrl: this.state.user.photoURL
+      }
     }
     var updates = {}
     updates['/recipes/' + newRecipeKey] = recipeData

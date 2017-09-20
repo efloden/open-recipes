@@ -4,7 +4,7 @@ import '../App.css'
 import RecipePosts from './RecipePosts'
 import RecipeEditor from './RecipeEditor'
 import * as firebase from 'firebase'
-import { Button, Col, Grid, Row, Modal, Well } from 'react-bootstrap'
+import { Button, Col, Grid, Row, Modal, Well, Glyphicon } from 'react-bootstrap'
 
 class RecipeGrid extends Component {
   static propTypes = {
@@ -81,13 +81,18 @@ class RecipePost extends Component {
       <Col sm={6} md={3}>
         <Well>
           <h4>{this.props.recipe.recipe_name}</h4>
-          <h4>{this.props.recipe.key}</h4>
           <h4>Ingredients</h4>
           {ingredients}
           <h4>Steps</h4>
           {steps}
-          <Button onClick={this.edit}
-            bsSize="small" bsStyle="success">Edit
+          <div>
+            <img src={this.props.recipe.user.photoUrl}
+              className='user-img'
+              alt='user' /> <a>{this.props.recipe.user.name}</a>
+          </div>
+          <Button onClick={this.edit} className='top-right'
+            bsSize="xsmall" bsStyle="success">
+            <Glyphicon glyph="edit" />
           </Button>
         </Well>
         {recipeEditModal}
@@ -141,8 +146,9 @@ class RecipeWall extends Component {
       <div>
         <Col xs={0} md={2} />
         <Col xs={12} md={6}>
-          <Button onClick={this.open}
-            bsSize="small" bsStyle="success">Create Recipe
+          <Button onClick={this.open} block className='margin-bottom'
+            bsSize="small">
+            🍗 🍖 🍕 🍡 🍤 🍱 🍛 <b>Create a Recipe!</b> 🍣 🍥 🍚 🍙 🍘 🍢 🍜
           </Button>
           <RecipeGrid recipes={this.state.recipes} />
           {recipePostModal}
