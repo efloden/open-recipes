@@ -93,6 +93,20 @@ class RecipePosts extends Component {
     })
     this.setState({ ingredients: newIngredients })
   }
+  handleAmountChange = (idx) => (evt) => {
+    const newIngredients = this.state.ingredients.map((ingredient, sidx) => {
+      if (idx !== sidx) return ingredient
+      return { ...ingredient, amount: evt.target.value }
+    })
+    this.setState({ ingredients: newIngredients })
+  }
+  handleUnitChange = (idx) => (evt) => {
+    const newIngredients = this.state.ingredients.map((ingredient, sidx) => {
+      if (idx !== sidx) return ingredient
+      return { ...ingredient, unit: evt.target.value }
+    })
+    this.setState({ ingredients: newIngredients })
+  }
   handleAddIngredient = () => {
     this.setState({
       ingredients: this.state.ingredients.concat([{ name: '' }])
@@ -155,6 +169,28 @@ class RecipePosts extends Component {
                       </Button>
                     </InputGroup.Button>
                   </InputGroup>
+                  <Form inline>
+                    <FormGroup controlId="formInlineAmount">
+                      <ControlLabel>Amount</ControlLabel>
+                      {' '}
+                      <FormControl
+                        type="number"
+                        placeholder={'1'}
+                        value={ingredient.amount}
+                        onChange={this.handleAmountChange(idx)}
+                      />
+                    </FormGroup> {' '}
+                    <FormGroup controlId="formInlineUnit">
+                      <ControlLabel>Unit</ControlLabel>
+                      {' '}
+                      <FormControl
+                        type="text"
+                        placeholder={'each'}
+                        value={ingredient.unit}
+                        onChange={this.handleUnitChange(idx)}
+                      />
+                    </FormGroup>
+                  </Form>
                 </ListGroupItem>
               ))}
             </ListGroup>

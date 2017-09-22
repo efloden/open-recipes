@@ -58,9 +58,7 @@ class RecipePost extends Component {
     const Ingredient = (ingredient, index) => {
       return (
         <div key={index}>
-          {ingredient.name}
-          {ingredient.amount}
-          {ingredient.unit}
+          {ingredient.name} {ingredient.amount} {ingredient.unit}
         </div>
       )
     }
@@ -70,7 +68,7 @@ class RecipePost extends Component {
     const Step = (step, index) => {
       return (
         <div key={index}>
-          {step.step}
+          {index + 1} {step.step}
         </div>
       )
     }
@@ -148,7 +146,7 @@ class RecipeWall extends Component {
         <Col xs={12} md={6}>
           <Button onClick={this.open} block className='margin-bottom'
             bsSize="small">
-            🍗 🍖 🍕 🍡 🍤 🍱 🍛 <b>Create a Recipe!</b> 🍣 🍥 🍚 🍙 🍘 🍢 🍜
+            🍗 🍖 🍕 🍡 🍤 🍱 <b>Create a Recipe!</b> 🍣 🍥 🍙 🍘 🍢 🍜
           </Button>
           <RecipeGrid recipes={this.state.recipes} />
           {recipePostModal}
