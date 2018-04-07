@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import '../App.css'
 import * as firebase from 'firebase'
@@ -7,20 +7,23 @@ import {
   Button,
   Form,
   FormGroup,
-  FormControl,
-  ControlLabel,
   Col,
   ListGroup,
   ListGroupItem,
   InputGroup
-} from 'react-bootstrap'
+} from 'reactstrap'
+import {
+  ControlLabel,
+  FormControl
+} from 'bootstrap'
+
 import {
   SortableContainer,
   // SortableElement,
   arrayMove
 } from 'react-sortable-hoc'
 
-class Item extends Component {
+class Item extends React.Component {
   static propTypes = {
     item: PropTypes.object.isRequired
   }
@@ -59,7 +62,7 @@ class Item extends Component {
 // Disabling draggable sorting
 // const SortableItem = SortableElement(Item)
 
-class Items extends Component {
+class Items extends React.Component {
   static propTypes = {
     items: PropTypes.array.isRequired
   }
@@ -89,7 +92,7 @@ class Items extends Component {
 
 const SortableList = SortableContainer(Items)
 
-class RecipeList extends Component {
+class RecipeList extends React.Component {
   constructor () {
     super()
     this.state = {

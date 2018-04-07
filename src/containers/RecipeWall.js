@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import '../App.css'
 import RecipePosts from './RecipePosts'
 import RecipeEditor from './RecipeEditor'
 import * as firebase from 'firebase'
-import { Button, Col, Grid, Row, Modal, Well, Glyphicon } from 'react-bootstrap'
+import { Button, Col, Row, Modal } from 'reactstrap'
+import { Grid, Well, Glyphicon } from 'bootstrap'
 
-class RecipeGrid extends Component {
+class RecipeGrid extends React.Component {
   static propTypes = {
     recipes: PropTypes.array
   }
@@ -26,7 +27,7 @@ class RecipeGrid extends Component {
   }
 }
 
-class RecipePost extends Component {
+class RecipePost extends React.Component {
   static propTypes = {
     recipe: PropTypes.object.isRequired
   }
@@ -99,7 +100,7 @@ class RecipePost extends Component {
   }
 }
 
-class RecipeWall extends Component {
+class RecipeWall extends React.Component {
   constructor () {
     super()
     this.state = {

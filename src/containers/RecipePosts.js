@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import '../App.css'
 import * as firebase from 'firebase'
-import { FormGroup, FormControl, InputGroup, ControlLabel, Button, Form,
+import { FormGroup, InputGroup, Button, Form,
   ListGroup, ListGroupItem
-} from 'react-bootstrap'
+} from 'reactstrap'
+import { ControlLabel, FormControl, } from 'bootstrap'
 
-class RecipePosts extends Component {
+class RecipePosts extends React.Component {
   static propTypes = {
     close: PropTypes.func.isRequired
   }

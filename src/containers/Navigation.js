@@ -5,10 +5,14 @@ import * as firebase from 'firebase'
 import RecipeList from './RecipeList'
 import RecipeWall from './RecipeWall'
 import {
+  Button,
+  Collapse,
   Navbar,
+  NavbarBrand,
   Nav,
-  NavItem
-} from 'react-bootstrap'
+  NavItem,
+  NavLink
+} from 'reactstrap'
 import {
   BrowserRouter as Router,
   Route,
@@ -29,27 +33,26 @@ class Navigation extends Component {
     return (
       <Router>
         <div>
-          <Navbar inverse collapseOnSelect>
-            <Navbar.Header>
-              <Navbar.Brand>
-                <span style={{ width: 95 }}>Open Recipes</span>
-                <img src={logo} className="App-logo" alt="logo" />
-              </Navbar.Brand>
-              <Navbar.Toggle />
-            </Navbar.Header>
-            <Navbar.Collapse>
-              <Nav>
-                <NavItem eventKey={1}>
+          <Navbar color="light" light expand="md">
+            <NavbarBrand href="/open-recipies/">
+              <span style={{ width: 95 }}>Open Recipes</span>
+              <img src={logo} className="App-logo" alt="logo" />
+            </NavbarBrand>
+            <Collapse isOpen>
+              <Nav className="ml-auto" navbar>
+                <NavItem >
                   <Link to="/open-recipes/recipes">Recipes</Link>
                 </NavItem>
-                <NavItem eventKey={2}>
+                <NavItem>
                   <Link to="/open-recipes/lists">Lists</Link>
                 </NavItem>
+                <NavItem>
+                  <Button onClick={this.logOut}>
+                    Log out
+                  </Button>
+                </NavItem>
               </Nav>
-              <Nav pullRight>
-                <NavItem eventKey={1} onClick={this.logOut}>Log out</NavItem>
-              </Nav>
-            </Navbar.Collapse>
+            </Collapse>
           </Navbar>
           <Route exact path="/open-recipes/" component={RecipeList} />
           <Route path="/open-recipes/recipes" component={RecipeWall} />
