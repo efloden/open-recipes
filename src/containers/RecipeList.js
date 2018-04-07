@@ -10,12 +10,9 @@ import {
   Col,
   ListGroup,
   ListGroupItem,
-  InputGroup
+  InputGroup,
+  Input
 } from 'reactstrap'
-import {
-  ControlLabel,
-  FormControl
-} from 'bootstrap'
 
 import {
   SortableContainer,
@@ -150,30 +147,27 @@ class RecipeList extends React.Component {
       itemName: event.target.value
     })
   }
-
   render () {
     return (
       <div>
         <Col xs={3} md={3} />
         <Col xs={12} md={6}>
-          {this.sortableList(this.state.items)}
           <Form inline onSubmit={this.addItem}>
             <FormGroup controlId='formBasicText'>
-              <ControlLabel>Add an Item</ControlLabel>
+              Add an Item
               {' '}
               <InputGroup>
-                <FormControl
+                <Input
                   type='text'
                   value={this.state.itemName}
                   placeholder='Enter item name'
                   onChange={this.handleChange}
                 />
-                <InputGroup.Button>
-                  <Button type='submit' bsStyle='success'>+</Button>
-                </InputGroup.Button>
+                <Button type='submit' bsStyle='success'>+</Button>
               </InputGroup>
             </FormGroup>
           </Form>
+          {this.sortableList(this.state.items)}
         </Col>
         <Col xs={3} md={3} />
       </div>

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import '../App.css'
 import logo from '../logo.svg'
 import * as firebase from 'firebase'
-import RecipeList from './RecipeList'
-import RecipeWall from './RecipeWall'
+import RecipeList from './RecipeList.js'
+import RecipeWall from './RecipeWall.js'
 import {
   Button,
   Collapse,
@@ -54,7 +54,7 @@ class Navigation extends Component {
               </Nav>
             </Collapse>
           </Navbar>
-          <Route exact path="/open-recipes/" component={RecipeList} />
+          <Route exact path="/open-recipes/" component={RecipeList.RecipeList} />
           <Route path="/open-recipes/recipes" component={RecipeWall} />
           <Route path="/open-recipes/lists" component={RecipeList} />
         </div>
