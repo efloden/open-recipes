@@ -127,11 +127,10 @@ class RecipeWall extends React.Component {
     )
     return (
       <div>
-        <Col xs={0} md={2} />
-        <Col xs={12} md={6}>
-          <Button onClick={this.open} block className='margin-bottom'>
-            <b>Create a Recipe</b>
-          </Button>
+        <Button onClick={this.open} block className='margin-bottom'>
+          <b>Create a Recipe</b>
+        </Button>
+        <Container>
           <Row>
               {
                 this.state.recipes && this.state.recipes.length > 0 && this.state.recipes.map((value, index) => (
@@ -140,9 +139,8 @@ class RecipeWall extends React.Component {
                 ))
               }
           </Row>
-          {recipePostModal}
-        </Col>
-        <Col xs={0} md={2} />
+        </Container>
+        {recipePostModal}
       </div>
     )
   }

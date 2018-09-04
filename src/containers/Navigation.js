@@ -38,21 +38,23 @@ class Navigation extends Component {
               <span style={{ width: 95 }}>Open Recipes</span>
               <img src={logo} className="App-logo" alt="logo" />
             </NavbarBrand>
-            <Collapse isOpen>
-              <Nav className="ml-auto" navbar>
-                <NavItem >
+            <Nav className="ml-auto" navbar>
+              <NavItem >
+                <NavLink>
                   <Link to="/open-recipes/recipes">Recipes</Link>
-                </NavItem>
-                <NavItem>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink>
                   <Link to="/open-recipes/lists">Lists</Link>
-                </NavItem>
-                <NavItem>
-                  <Button onClick={this.logOut}>
-                    Log out
-                  </Button>
-                </NavItem>
-              </Nav>
-            </Collapse>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <Button onClick={this.logOut}>
+                  Log out
+                </Button>
+              </NavItem>
+            </Nav>
           </Navbar>
           <Route exact path="/open-recipes/" component={RecipeList.RecipeList} />
           <Route path="/open-recipes/recipes" component={RecipeWall} />
