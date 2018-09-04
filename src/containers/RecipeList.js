@@ -163,7 +163,7 @@ class RecipeList extends React.Component {
                   placeholder='Enter item name'
                   onChange={this.handleChange}
                 />
-                <Button type='submit' bsStyle='success'>+</Button>
+                <Button type='submit'>+</Button>
               </InputGroup>
             </FormGroup>
           </Form>

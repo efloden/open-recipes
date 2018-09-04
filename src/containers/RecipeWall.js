@@ -4,28 +4,10 @@ import '../App.css'
 import RecipePosts from './RecipePosts'
 import RecipeEditor from './RecipeEditor'
 import * as firebase from 'firebase'
-import { Button, Col, Row, Modal } from 'reactstrap'
-import { Grid, Well, Glyphicon } from 'bootstrap'
-
-class RecipeGrid extends React.Component {
-  static propTypes = {
-    recipes: PropTypes.array
-  }
-  render () {
-    const recipeGrid = this.props.recipes &&
-    this.props.recipes.map((value, index) => (
-      <RecipePost key={value.key} index={index}
-        recipe={value} />
-    ))
-    return (
-      <Grid>
-        <Row>
-          {this.props.recipes && recipeGrid}
-        </Row>
-      </Grid>
-    )
-  }
-}
+import {
+  Button, Col, Container, Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Row, Modal, ModalHeader, ModalBody
+} from 'reactstrap'
 
 class RecipePost extends React.Component {
   static propTypes = {
@@ -46,14 +28,14 @@ class RecipePost extends React.Component {
   render () {
     const recipeEditModal = (
       <Modal show={this.state.showEditModal} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editing Recipe</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <ModalHeader closeButton>
+          Editing Recipe
+        </ModalHeader>
+        <ModalBody>
           <div>
             <RecipeEditor close={this.close} recipe={this.props.recipe} />
           </div>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     )
     const Ingredient = (ingredient, index) => {
@@ -77,23 +59,24 @@ class RecipePost extends React.Component {
       return Step(value, index)
     })
     return (
-      <Col sm={6} md={3}>
-        <Well>
-          <h4>{this.props.recipe.recipe_name}</h4>
-          <h4>Ingredients</h4>
-          {ingredients}
-          <h4>Steps</h4>
-          {steps}
-          <div>
-            <img src={this.props.recipe.user.photoUrl}
-              className='user-img'
-              alt='user' /> <a>{this.props.recipe.user.name}</a>
-          </div>
-          <Button onClick={this.edit} className='top-right'
-            bsSize="xsmall" bsStyle="success">
-            <Glyphicon glyph="edit" />
-          </Button>
-        </Well>
+      <Col className='spacing' lg='4' sm='6' xs='12'>
+        <Card>
+          <CardBody>
+            <CardTitle>{this.props.recipe.recipe_name}</CardTitle>
+            <CardSubtitle>Ingredients</CardSubtitle>
+            <CardText>{ingredients}</CardText>
+            <CardSubtitle>Steps</CardSubtitle>
+            <CardText>{steps}</CardText>
+            <div>
+              <img src={this.props.recipe.user.photoUrl}
+                className='user-img'
+                alt='user' /> <a>{this.props.recipe.user.name}</a>
+            </div>
+            <Button onClick={this.edit} className='top-right'>
+              edit
+            </Button>
+          </CardBody>
+          </Card>
         {recipeEditModal}
       </Col>
     )
@@ -121,6 +104,7 @@ class RecipeWall extends React.Component {
       console.error('The read failed: ' + errorObject.code)
     })
   }
+  
   close = () => {
     this.setState({ showModal: false })
   }
@@ -131,25 +115,31 @@ class RecipeWall extends React.Component {
   render () {
     const recipePostModal = (
       <Modal show={this.state.showModal} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create a Recipe</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <ModalHeader closeButton>
+          Create a Recipe
+        </ModalHeader>
+        <ModalBody>
           <div>
             <RecipePosts close={this.close} />
           </div>
-        </Modal.Body>
+        </ModalBody>
       </Modal>
     )
     return (
       <div>
         <Col xs={0} md={2} />
         <Col xs={12} md={6}>
-          <Button onClick={this.open} block className='margin-bottom'
-            bsSize="small">
-            🍗 🍖 🍕 🍡 🍤 🍱 <b>Create a Recipe!</b> 🍣 🍥 🍙 🍘 🍢 🍜
+          <Button onClick={this.open} block className='margin-bottom'>
+            <b>Create a Recipe</b>
           </Button>
-          <RecipeGrid recipes={this.state.recipes} />
+          <Row>
+              {
+                this.state.recipes && this.state.recipes.length > 0 && this.state.recipes.map((value, index) => (
+                  <RecipePost key={value.key} index={index}
+                    recipe={value} />
+                ))
+              }
+          </Row>
           {recipePostModal}
         </Col>
         <Col xs={0} md={2} />
